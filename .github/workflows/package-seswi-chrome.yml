@@ -1,0 +1,29 @@
+name: Package SesWi Chrome
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Verify Chrome build
+        run: test -f .output/chrome-mv3/manifest.json
+
+      - name: Upload Chrome extension
+        uses: actions/upload-artifact@v4
+        with:
+          name: SesWi-Chrome-v4.0.2
+          path: .output/chrome-mv3/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 1
